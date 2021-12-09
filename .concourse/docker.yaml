@@ -1,0 +1,44 @@
+---
+resources:
+- name: packer_resource
+  type: git
+  icon: github
+  source:
+    uri: https://github.com/mitodl/concourse-packer-resource
+    branch: master
+
+- name: concourse-packer-resource
+  type: registry-image
+  icon: docker
+  source:
+    tag: latest
+    repository: mitodl/concourse-packer-resource
+    username: ((dockerhub.username))
+    password: ((dockerhub.password))
+
+jobs:
+- name: build-and-publish-image
+  public: true
+  plan:
+  - get: packer_resource
+    trigger: true
+  - task: build-image
+    privileged: true
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: vito/oci-build-task
+      inputs:
+      - name: packer_resource
+      outputs:
+      - name: image
+      run:
+        path: build
+      params:
+        CONTEXT: packer_resource
+  - put: concourse-packer-resource
+    params:
+      image: image/image.tar
+      additional_tags: concourse-packer-resource/.git/ref
