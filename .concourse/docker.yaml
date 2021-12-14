@@ -41,4 +41,4 @@ jobs:
   - put: concourse-packer-resource
     params:
       image: image/image.tar
-      additional_tags: concourse-packer-resource/.git/ref
+      additional_tags: packer_resource/.git/ref

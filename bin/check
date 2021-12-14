@@ -14,7 +14,7 @@ import lib.concourse
 # do_check
 # =============================================================================
 def do_check() -> None:
-    lib.concourse.do_check()
+    lib.concourse.do_packer(action='check')
 
 
 # =============================================================================

@@ -98,22 +98,15 @@ def _create_concourse_out_payload_from_packer_build_manifest(
 # public lifecycle functions
 #
 # =============================================================================
-
-def do_check() -> None:
-    # not implemented
-    _write_payload([{'id': '0'}])
-
-
-def do_in() -> None:
-    # not implemented
-    _write_payload({
-        "version": {
-            'id': '0'
-        }
-    })
-
-
-def do_out() -> None:
+def do_out(action: str) -> None:
+    # validate action
+    if action not in ['check', 'in', 'out']:
+        raise ValueError(action + ' is not one of allowed check, in, or out.')
+    # short circuit return on 'in'
+    if action == 'in':
+        # not implemented
+        _write_payload({"version": {'id': '0'}})
+        return None
     # read the concourse input payload
     input_payload = _read_payload()
     # get force setting from payload
@@ -153,23 +146,25 @@ def do_out() -> None:
         log_pretty(vars)
     # dump the current packer version
     lib.packer.version()
-    # validate the template
-    lib.packer.validate(
-        working_dir_path,
-        template_file_path,
-        var_file_paths=var_file_paths,
-        vars=vars,
-        vars_from_files=vars_from_files,
-        debug=debug_enabled)
-    # build the template, getting the build manifest back
-    build_manifest = lib.packer.build(
-        working_dir_path,
-        template_file_path,
-        var_file_paths=var_file_paths,
-        vars=vars,
-        vars_from_files=vars_from_files,
-        debug=debug_enabled,
-        force=force_enabled)
+    if action == 'check':
+        # validate the template
+        lib.packer.validate(
+            working_dir_path,
+            template_file_path,
+            var_file_paths=var_file_paths,
+            vars=vars,
+            vars_from_files=vars_from_files,
+            debug=debug_enabled)
+    elif action == 'out':
+        # build the template, getting the build manifest back
+        build_manifest = lib.packer.build(
+            working_dir_path,
+            template_file_path,
+            var_file_paths=var_file_paths,
+            vars=vars,
+            vars_from_files=vars_from_files,
+            debug=debug_enabled,
+            force=force_enabled)
     # dump build manifest, if debug
     if debug_enabled:
         log('build manifest:')
