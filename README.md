@@ -8,7 +8,7 @@ A [concourse-ci](https://concourse-ci.org) resource for building images via [Pac
 
 ### `check`: not implemented
 
-### `in`: not implemented
+### `in`: validate the template and config directory
 
 ### `out`: build a new image
 

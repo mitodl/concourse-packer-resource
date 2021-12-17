@@ -98,14 +98,14 @@ def _create_concourse_out_payload_from_packer_build_manifest(
 # public lifecycle functions
 #
 # =============================================================================
-def do_out(action: str) -> None:
+def do_packer(action: str) -> None:
     # validate action
     if action not in ['check', 'in', 'out']:
         raise ValueError(action + ' is not one of allowed check, in, or out.')
     # short circuit return on 'in'
-    if action == 'in':
+    if action == 'check':
         # not implemented
-        _write_payload({"version": {'id': '0'}})
+        _write_payload([{'id': '0'}])
         return None
     # read the concourse input payload
     input_payload = _read_payload()
@@ -146,7 +146,7 @@ def do_out(action: str) -> None:
         log_pretty(vars)
     # dump the current packer version
     lib.packer.version()
-    if action == 'check':
+    if action == 'in':
         # validate the template
         lib.packer.validate(
             working_dir_path,
