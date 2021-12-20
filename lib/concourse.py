@@ -106,7 +106,7 @@ def do_packer(action: str) -> None:
     if action == 'check':
         # not implemented
         _write_payload([{'id': '0'}])
-        return None
+        return
     # read the concourse input payload
     input_payload = _read_payload()
     # get force setting from payload
@@ -155,16 +155,19 @@ def do_packer(action: str) -> None:
             vars=vars,
             vars_from_files=vars_from_files,
             debug=debug_enabled)
-    elif action == 'out':
-        # build the template, getting the build manifest back
-        build_manifest = lib.packer.build(
-            working_dir_path,
-            template_file_path,
-            var_file_paths=var_file_paths,
-            vars=vars,
-            vars_from_files=vars_from_files,
-            debug=debug_enabled,
-            force=force_enabled)
+        # dummy payload
+        _write_payload({"version": {'id': '0'}})
+        return
+    # action must be 'out'
+    # build the template, getting the build manifest back
+    build_manifest = lib.packer.build(
+        working_dir_path,
+        template_file_path,
+        var_file_paths=var_file_paths,
+        vars=vars,
+        vars_from_files=vars_from_files,
+        debug=debug_enabled,
+        force=force_enabled)
     # dump build manifest, if debug
     if debug_enabled:
         log('build manifest:')
