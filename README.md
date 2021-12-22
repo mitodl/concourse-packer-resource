@@ -8,13 +8,15 @@ A [concourse-ci](https://concourse-ci.org) resource for building images via [Pac
 
 ### `check`: not implemented
 
-### `in`: validate the template and config directory
+### `in`: not implemented
 
-### `out`: build a new image
+### `out`: build a new instance artifact
 
 **parameters**
 
-- `template`: _required_. the path to the packer template file.
+- `template`: _required_. the path to the packer template file or directory.
+
+- `objective`: _optional_. the packer objective for the template; either `validate` or `build` triggers corresponding additional actions. default: `validate`
 
 - `env_vars`: _optional_. dict of variables to set in the environment.
 
@@ -58,6 +60,7 @@ jobs:
   - put: build-ami
     params:
       template: my-ami-template/template.json
+      objective: build
       var_files:
       - my-ami-template/my-vars.json
       env_vars:

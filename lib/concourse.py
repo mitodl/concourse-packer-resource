@@ -107,8 +107,14 @@ def do_packer(action: str) -> None:
         # not implemented
         _write_payload([{'id': '0'}])
         return
+    if action == 'in':
+        # not implemented
+        _write_payload({"version": {'id': '0'}})
+        return
     # read the concourse input payload
     input_payload = _read_payload()
+    # get packer objective from payload
+    objective: str = input_payload['params'].get('objective', 'validate')
     # get force setting from payload
     force_enabled: bool = input_payload['params'].get('force', False)
     # get debug setting from payload
@@ -146,7 +152,10 @@ def do_packer(action: str) -> None:
         log_pretty(vars)
     # dump the current packer version
     lib.packer.version()
-    if action == 'in':
+    # initialize output payload
+    output_payload = {}
+    # execute desired packer objective
+    if objective == 'validate':
         # check formatting
         lib.packer.format(
             working_dir_path,
@@ -159,26 +168,23 @@ def do_packer(action: str) -> None:
             vars=vars,
             vars_from_files=vars_from_files,
             debug=debug_enabled)
-        # dummy payload
-        _write_payload({"version": {'id': '0'}})
-        return
-    # action must be 'out'
-    # build the template, getting the build manifest back
-    build_manifest = lib.packer.build(
-        working_dir_path,
-        template_file_path,
-        var_file_paths=var_file_paths,
-        vars=vars,
-        vars_from_files=vars_from_files,
-        debug=debug_enabled,
-        force=force_enabled)
-    # dump build manifest, if debug
-    if debug_enabled:
-        log('build manifest:')
-        log_pretty(build_manifest)
-    # convert the manifest into a concourse output payload
-    output_payload = _create_concourse_out_payload_from_packer_build_manifest(
-        build_manifest)
+    elif objective == 'build':
+        # build the template, getting the build manifest back
+        build_manifest = lib.packer.build(
+            working_dir_path,
+            template_file_path,
+            var_file_paths=var_file_paths,
+            vars=vars,
+            vars_from_files=vars_from_files,
+            debug=debug_enabled,
+            force=force_enabled)
+        # dump build manifest, if debug
+        if debug_enabled:
+            log('build manifest:')
+            log_pretty(build_manifest)
+        # convert the manifest into a concourse output payload
+        output_payload = _create_concourse_out_payload_from_packer_build_manifest(
+            build_manifest)
     # dump output payload, if debug
     if debug_enabled:
         log('output payload:')
