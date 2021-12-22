@@ -147,7 +147,11 @@ def do_packer(action: str) -> None:
     # dump the current packer version
     lib.packer.version()
     if action == 'in':
-        # validate the template
+        # check formatting
+        lib.packer.format(
+            working_dir_path,
+            template_file_path)
+        # validate the template (directory)
         lib.packer.validate(
             working_dir_path,
             template_file_path,

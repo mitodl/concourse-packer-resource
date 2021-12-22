@@ -213,6 +213,21 @@ def version() -> None:
 
 
 # =============================================================================
+# format
+# =============================================================================
+def format(
+        working_dir_path: str,
+        template_file_path: str) -> None:
+    # execute format command
+    _packer(
+        'fmt',
+        '-check',
+        '-diff',
+        template_file_path,
+        working_dir=working_dir_path)
+
+
+# =============================================================================
 # validate
 # =============================================================================
 def validate(
