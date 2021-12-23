@@ -187,10 +187,14 @@ def _packer(*args: str, input=None, working_dir=None) -> List[dict]:
             stdin=input,
             cwd=working_dir) as pipe:
         for line in pipe.stdout:
-            # parse the machine readable output as it arrives
-            parsed_line = _parse_packer_machine_readable_output_line(line)
-            parsed_lines.append(parsed_line)
-            _print_parsed_packer_machine_readable_output_line(parsed_line)
+            if 'fmt' not in args:
+                # parse the machine readable output as it arrives
+                parsed_line = _parse_packer_machine_readable_output_line(line)
+                parsed_lines.append(parsed_line)
+                _print_parsed_packer_machine_readable_output_line(parsed_line)
+            else:
+                # print the formatting issues
+                log(f"n/a | ui | warning | {line}")
     if pipe.returncode != 0:
         # args are masked to prevent credentials leaking
         raise subprocess.CalledProcessError(
