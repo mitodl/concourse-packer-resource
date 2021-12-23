@@ -38,9 +38,7 @@ def _parse_packer_machine_readable_output_line(output_line: str) -> dict:
         }
         # split each line on commas
         line_tokens: list = output_line.split(',')
-        # log(f"line tokens: {line_tokens}")
         for i, line_token in enumerate(line_tokens):
-            # log(f"token #{i}: {line_token}")
             # assign payload fields based on token number
             if i == 0:
                 message_item['timestamp'] = line_token
@@ -65,8 +63,7 @@ def _format_packer_machine_readable_output_line(
     data: str,
     subtype=None
 ) -> str:
-    # most messages won't have a target
-    # which means it's global
+    # most messages won't have a target which means it's global
     if not target:
         target = 'global'
     # consistent padding for the 'version' types
@@ -86,7 +83,6 @@ def _format_packer_machine_readable_output_line(
 def _print_parsed_packer_machine_readable_output_line(
         parsed_line: dict) -> None:
     if parsed_line:
-        # log_pretty(parsed_line)
         if len(parsed_line['data']) > 0:
             subtype = None
             # check for subtype
@@ -95,9 +91,7 @@ def _print_parsed_packer_machine_readable_output_line(
                 subtype = parsed_line['data'].pop(0)
             for item in parsed_line['data']:
                 # split on \\n
-                # item_lines = item.splitlines(True)
                 item_lines = item.split('\\n')
-                # log(f"item lines: {item_lines}")
                 for item_line in item_lines:
                     log(_format_packer_machine_readable_output_line(
                         parsed_line['timestamp'],
@@ -112,10 +106,7 @@ def _print_parsed_packer_machine_readable_output_line(
 # =============================================================================
 def _parse_packer_parsed_output_for_build_manifest(
         parsed_output: List[dict]) -> dict:
-    manifest = {
-        'artifacts': {}
-    }
-    # log_pretty(parsed_output)
+    manifest = {'artifacts': {}}
     # create collection of targets
     targets = {}
     for parsed_item in parsed_output:
@@ -125,16 +116,13 @@ def _parse_packer_parsed_output_for_build_manifest(
                 targets[target_name] = []
             del parsed_item['target']
             targets[target_name].append(parsed_item)
-    # log_pretty(targets)
-    # go through targets
+    # iterate on targets
     for target in targets.keys():
         # log('target:')
         # log_pretty(target)
         # split into artifacts
         target_artifacts = {}
         for target_item in targets[target]:
-            # log('target_item:')
-            # log_pretty(target_item)
             if target_item['type'] == 'artifact':
                 # first index of data will be the artifact number
                 artifact_number = target_item['data'][0]
@@ -154,9 +142,7 @@ def _parse_packer_parsed_output_for_build_manifest(
                 # assign the artifact key and value
                 target_artifacts[artifact_number][artifact_key] = \
                     artifact_value
-        # log_pretty(target_artifacts)
         manifest['artifacts'][target] = target_artifacts
-    # log_pretty(manifest)
     return manifest
 
 
@@ -187,14 +173,14 @@ def _packer(*args: str, input=None, working_dir=None) -> List[dict]:
             stdin=input,
             cwd=working_dir) as pipe:
         for line in pipe.stdout:
-            if 'fmt' not in args:
+            if 'fmt' in args:
+                # directly log the formatting issues
+                log(f"n/a | ui | warning | {line.rstrip()}")
+            else:
                 # parse the machine readable output as it arrives
                 parsed_line = _parse_packer_machine_readable_output_line(line)
                 parsed_lines.append(parsed_line)
                 _print_parsed_packer_machine_readable_output_line(parsed_line)
-            else:
-                # print the formatting issues
-                log(f"n/a | ui | warning | {line}")
     if pipe.returncode != 0:
         # args are masked to prevent credentials leaking
         raise subprocess.CalledProcessError(
