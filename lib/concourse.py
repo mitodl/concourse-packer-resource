@@ -152,6 +152,10 @@ def do_packer(action: str) -> None:
         log_pretty(vars)
     # dump the current packer version
     lib.packer.version()
+    # initialize templates and configs
+    lib.packer.init(
+        working_dir_path,
+        template_file_path)
     # initialize output payload
     output_payload = {}
     # execute desired packer objective
