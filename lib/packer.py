@@ -173,9 +173,11 @@ def _packer(*args: str, input=None, working_dir=None) -> List[dict]:
             stdin=input,
             cwd=working_dir) as pipe:
         for line in pipe.stdout:
-            if 'fmt' in args:
-                # directly log the formatting issues
-                log(f"n/a | ui | warning | {line.rstrip()}")
+            if 'fmt' in args or 'init' in args:
+                # determine log level
+                log_level = 'warning' if 'fmt' in args else 'info'
+                # directly log the output
+                log(f"global | ui | {log_level} | {line.rstrip()}")
             else:
                 # parse the machine readable output as it arrives
                 parsed_line = _parse_packer_machine_readable_output_line(line)
@@ -200,6 +202,19 @@ def _packer(*args: str, input=None, working_dir=None) -> List[dict]:
 def version() -> None:
     # execute version command
     _packer('version')
+
+
+# =============================================================================
+# init
+# =============================================================================
+def init(
+        working_dir_path: str,
+        template_file_path: str) -> None:
+    # execute init command
+    _packer(
+        'init',
+        template_file_path,
+        working_dir=working_dir_path)
 
 
 # =============================================================================
