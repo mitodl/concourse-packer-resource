@@ -15,24 +15,58 @@ resources:
     - src/bilder/images/
     uri: https://github.com/mitodl/ol-infrastructure
   type: git
-- name: validate-template-dir
+- name: artifact-build-schedule
+  type: time
+  icon: clock-outline
+  source:
+    start: 0400
+    stop: 0500
+    days: [Sunday]
+- name: execute-packer
   type: packer
 
 jobs:
-- name: validate-template-dirs
+- name: packer-validate-workflow
   plan:
   - get: packer_templates
     trigger: true
   - in_parallel:
-    - put: validate-template-dir
+    - put: execute-packer
       params:
         template: packer_templates/src/bilder/images/concourse/.
-    - put: validate-template-dir
+        objective: validate
+    - put: execute-packer
       params:
         template: packer_templates/src/bilder/images/consul/.
-    - put: validate-template-dir
+        objective: validate
+    - put: execute-packer
       params:
         template: packer_templates/src/bilder/images/edxapp/.
-    - put: validate-template-dir
+        objective: validate
+    - put: execute-packer
       params:
         template: packer_templates/src/bilder/images/vault/.
+        objective: validate
+- name: packer-build-workflow
+  plan:
+  - get: artifact-build-schedule
+    trigger: true
+  - get: packer_templates
+    trigger: false
+  - in_parallel:
+    - put: execute-packer
+      params:
+        template: packer_templates/src/bilder/images/concourse/.
+        objective: build
+    - put: execute-packer
+      params:
+        template: packer_templates/src/bilder/images/consul/.
+        objective: build
+    - put: execute-packer
+      params:
+        template: packer_templates/src/bilder/images/edxapp/.
+        objective: build
+    - put: execute-packer
+      params:
+        template: packer_templates/src/bilder/images/vault/.
+        objective: build
