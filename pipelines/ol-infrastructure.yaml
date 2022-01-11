@@ -33,20 +33,30 @@ jobs:
   - in_parallel:
     - put: execute-packer
       params:
-        template: packer_templates/src/bilder/images/concourse/.
+        template: packer_templates/src/bilder/images/.
         objective: validate
+        vars:
+          app_name: concourse
+        only:
+        - amazon-ebs.third-party
     - put: execute-packer
       params:
-        template: packer_templates/src/bilder/images/consul/.
+        template: packer_templates/src/bilder/images/.
         objective: validate
+        vars:
+          app_name: consul
+        only:
+        - amazon-ebs.third-party
     - put: execute-packer
       params:
         template: packer_templates/src/bilder/images/edxapp/.
         objective: validate
     - put: execute-packer
       params:
-        template: packer_templates/src/bilder/images/vault/.
+        template: packer_templates/src/bilder/images/.
         objective: validate
+        vars:
+          app_name: vault
 - name: packer-build-workflow
   plan:
   - get: artifact-build-schedule
@@ -56,17 +66,27 @@ jobs:
   - in_parallel:
     - put: execute-packer
       params:
-        template: packer_templates/src/bilder/images/concourse/.
+        template: packer_templates/src/bilder/images/.
         objective: build
+        vars:
+          app_name: concourse
+        only:
+        - amazon-ebs.third-party
     - put: execute-packer
       params:
-        template: packer_templates/src/bilder/images/consul/.
+        template: packer_templates/src/bilder/images/.
         objective: build
+        vars:
+          app_name: consul
+        only:
+        - amazon-ebs.third-party
     - put: execute-packer
       params:
         template: packer_templates/src/bilder/images/edxapp/.
         objective: build
     - put: execute-packer
       params:
-        template: packer_templates/src/bilder/images/vault/.
+        template: packer_templates/src/bilder/images/.
         objective: build
+        vars:
+          app_name: vault
