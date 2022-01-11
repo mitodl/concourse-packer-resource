@@ -241,6 +241,8 @@ def validate(
         var_file_paths: List[str] = None,
         vars: dict = None,
         vars_from_files: dict = None,
+        only: List[str] = None,
+        excepts: List[str] = None,
         syntax_only: bool = False,
         debug: bool = False) -> None:
     packer_command_args = []
@@ -260,6 +262,12 @@ def validate(
                     file_path,
                     working_dir=working_dir_path)
             packer_command_args.append(f"-var={var_name}={var_value}")
+    # only build specified sources
+    if only:
+        packer_command_args.append(f"-only={','.join(only)}")
+    # build all sources except those specified
+    elif excepts:
+        packer_command_args.append(f"-except={','.join(excepts)}")
     # optionally check only syntax
     if syntax_only:
         packer_command_args.append('-syntax-only')
@@ -284,6 +292,8 @@ def build(
         var_file_paths: List[str] = None,
         vars: dict = None,
         vars_from_files: dict = None,
+        only: List[str] = None,
+        excepts: List[str] = None,
         debug: bool = False,
         force: bool = False) -> dict:
     packer_command_args = []
@@ -303,6 +313,12 @@ def build(
                     file_path,
                     working_dir=working_dir_path)
             packer_command_args.append(f"-var={var_name}={var_value}")
+    # only build specified sources
+    if only:
+        packer_command_args.append(f"-only={','.join(only)}")
+    # build all sources except those specified
+    elif excepts:
+        packer_command_args.append(f"-except={','.join(excepts)}")
     # add force if requested
     if force:
         packer_command_args.append("-force")

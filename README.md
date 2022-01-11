@@ -10,7 +10,7 @@ A [concourse-ci](https://concourse-ci.org) resource for building images via [Pac
 
 ### `in`: not implemented
 
-### `out`: build a new instance artifact
+### `out`: validate a template, or template and config directory, or build a new instance artifact
 
 **parameters**
 
@@ -27,6 +27,10 @@ A [concourse-ci](https://concourse-ci.org) resource for building images via [Pac
 - `vars`: _optional_. dict of explicit packer variable key/value pairs.
 
 - `vars_from_files`: _optional_. dict of vars and file paths to use as their value.
+
+- `only`: _optional_. list of sources on which to perform the action (mutually exclusive with `excepts`)
+
+- `excepts`: _optional_. list of sources on which to not perform the action (mutually exclusive with `only`)
 
 - `force`: _optional_. set to `true` to enable the [force](https://packer.io/docs/commands/build.html#force) option during a packer build. default: `false`
 
