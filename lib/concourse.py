@@ -160,10 +160,6 @@ def do_packer(action: str) -> None:
     output_payload = {}
     # execute desired packer objective
     if objective == 'validate':
-        # check formatting
-        lib.packer.format(
-            working_dir_path,
-            template_file_path)
         # validate the template (directory)
         lib.packer.validate(
             working_dir_path,
@@ -172,6 +168,10 @@ def do_packer(action: str) -> None:
             vars=vars,
             vars_from_files=vars_from_files,
             debug=debug_enabled)
+        # check formatting
+        lib.packer.format(
+            working_dir_path,
+            template_file_path)
     elif objective == 'build':
         # build the template, getting the build manifest back
         build_manifest = lib.packer.build(

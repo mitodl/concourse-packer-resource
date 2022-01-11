@@ -173,7 +173,7 @@ def _packer(*args: str, input=None, working_dir=None) -> List[dict]:
             stdin=input,
             cwd=working_dir) as pipe:
         for line in pipe.stdout:
-            if 'fmt' in args or 'init' in args:
+            if 'fmt' in args:
                 # determine log level
                 log_level = 'warning' if 'fmt' in args else 'info'
                 # directly log the output
