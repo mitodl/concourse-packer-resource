@@ -6,7 +6,7 @@ CMD ["/bin/sh"]
 ARG PACKER_VERSION=1.7.8
 
 RUN set -x && \
-    apk add --update \
+    apk add --no-cache --update \
         curl \
         git \
         gnupg \

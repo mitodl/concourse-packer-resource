@@ -156,8 +156,11 @@ def do_packer(action: str) -> None:
     lib.packer.init(
         working_dir_path,
         template_file_path)
-    # initialize output payload
-    output_payload = {}
+    # initialize output payload (these values also used for validation)
+    output_payload = {
+        'version': None,
+        'metadata': []
+    }
     # execute desired packer objective
     if objective == 'validate':
         # validate the template (directory)
