@@ -6,6 +6,11 @@ resources:
   source:
     uri: https://github.com/mitodl/concourse-packer-resource
     branch: master
+    paths:
+    - lib
+    - bin
+    - Dockerfile
+    - Dockerfile.mitol_build
 
 - name: concourse-packer-resource
   type: registry-image
@@ -13,6 +18,14 @@ resources:
   source:
     tag: latest
     repository: mitodl/concourse-packer-resource
+    username: ((dockerhub.username))
+    password: ((dockerhub.password))
+- name: concourse-packer-resource-builder
+  type: registry-image
+  icon: docker
+  source:
+    tag: latest
+    repository: mitodl/concourse-packer-resource-builder
     username: ((dockerhub.username))
     password: ((dockerhub.password))
 
@@ -39,6 +52,26 @@ jobs:
       params:
         CONTEXT: packer_resource
   - put: concourse-packer-resource
+    params:
+      image: image/image.tar
+      additional_tags: packer_resource/.git/ref
+  - task: build-image-builder
+    privileged: true
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: vito/oci-build-task
+      inputs:
+      - name: packer_resource
+      outputs:
+      - name: image
+      run:
+        path: build
+      params:
+        DOCKERFILE: concourse-packer-resource/Dockerfile.mitol_build
+  - put: concourse-packer-resource-builder
     params:
       image: image/image.tar
       additional_tags: packer_resource/.git/ref
