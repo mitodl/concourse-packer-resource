@@ -1,0 +1,5 @@
+FROM mitodl/concourse-packer-resource
+ENV PYTHONUNBUFFERED=1
+CMD ["/bin/sh"]
+
+RUN pip install --no-cache-dir ansible pyinfra

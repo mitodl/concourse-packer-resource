@@ -49,8 +49,8 @@ resource_types:
 - name: packer
   type: docker-image
   source:
-    repository: snapkitchen/concourse-packer-resource
-    tag: 1.4.3
+    repository: mitodl/concourse-packer-resource
+    tag: latest
 
 resources:
 - name: build-ami

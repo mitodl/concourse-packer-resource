@@ -30,6 +30,8 @@ jobs:
   plan:
   - get: packer_templates
     trigger: true
+    params:
+      depth: 1
   - in_parallel:
     - put: execute-packer
       params:
@@ -63,6 +65,8 @@ jobs:
     trigger: true
   - get: packer_templates
     trigger: false
+    params:
+      depth: 1
   - in_parallel:
     - put: execute-packer
       params:
