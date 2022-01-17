@@ -125,6 +125,8 @@ def do_packer(action: str) -> None:
     var_file_paths: Optional[List[str]] = None
     vars: Optional[Dict] = None
     vars_from_files: Optional[Dict] = None
+    only: Optional[List[str]] = None
+    excepts: Optional[List[str]] = None
     # add var file paths, if provided
     if 'var_files' in input_payload['params']:
         var_file_paths = input_payload['params']['var_files']
@@ -139,6 +141,11 @@ def do_packer(action: str) -> None:
         _process_env_var_files(
             input_payload['params']['env_vars_from_files'],
             working_dir_path)
+    # set only or except, if either provided
+    if 'only' in input_payload['params']:
+        only = input_payload['params']['only']
+    elif 'excepts' in input_payload['params']:
+        excepts = input_payload['params']['excepts']
     # dump details, if debug enabled
     if debug_enabled:
         log('var_file_paths:')
@@ -165,6 +172,8 @@ def do_packer(action: str) -> None:
             var_file_paths=var_file_paths,
             vars=vars,
             vars_from_files=vars_from_files,
+            only=only,
+            excepts=excepts,
             debug=debug_enabled)
         # check formatting
         lib.packer.format(
@@ -178,6 +187,8 @@ def do_packer(action: str) -> None:
             var_file_paths=var_file_paths,
             vars=vars,
             vars_from_files=vars_from_files,
+            only=only,
+            excepts=excepts,
             debug=debug_enabled,
             force=force_enabled)
         # dump build manifest, if debug
