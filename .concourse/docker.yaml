@@ -70,7 +70,8 @@ jobs:
       run:
         path: build
       params:
-        DOCKERFILE: concourse-packer-resource/Dockerfile.mitol_build
+        CONTEXT: packer_resource
+        DOCKERFILE: packer_resource/Dockerfile.mitol_build
   - put: concourse-packer-resource-builder
     params:
       image: image/image.tar
