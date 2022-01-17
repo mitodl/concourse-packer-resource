@@ -46,8 +46,6 @@ jobs:
         objective: validate
         vars:
           app_name: concourse
-        only:
-        - amazon-ebs.third-party
     - put: packer-validate
       params:
         template: packer_templates/src/bilder/images/.
@@ -66,6 +64,8 @@ jobs:
         objective: validate
         vars:
           app_name: vault
+        only:
+        - amazon-ebs.third-party
 - name: packer-build-workflow
   plan:
   - get: artifact-build-schedule
@@ -81,8 +81,6 @@ jobs:
         objective: build
         vars:
           app_name: concourse
-        only:
-        - amazon-ebs.third-party
     - put: packer-build
       params:
         template: packer_templates/src/bilder/images/.
@@ -101,3 +99,5 @@ jobs:
         objective: build
         vars:
           app_name: vault
+        only:
+        - amazon-ebs.third-party

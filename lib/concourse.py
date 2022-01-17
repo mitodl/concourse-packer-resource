@@ -99,18 +99,13 @@ def _create_concourse_out_payload_from_packer_build_manifest(
 #
 # =============================================================================
 def do_packer(action: str) -> None:
-    # validate action
-    if action not in ['check', 'in', 'out']:
-        raise ValueError(action + ' is not one of allowed check, in, or out.')
-    # short circuit return on 'in'
-    if action == 'check':
-        # not implemented
-        _write_payload([{'id': '0'}])
-        return
-    if action == 'in':
+    # short circuit return on 'check' or 'in'
+    if action in ['check', 'in']:
         # not implemented
         _write_payload({"version": {'id': '0'}})
         return
+    if action != 'out':
+        raise ValueError(action + ' is not one of allowed check, in, or out.')
     # read the concourse input payload
     input_payload = _read_payload()
     # get packer objective from payload
@@ -192,6 +187,8 @@ def do_packer(action: str) -> None:
         # convert the manifest into a concourse output payload
         output_payload = _create_concourse_out_payload_from_packer_build_manifest(
             build_manifest)
+    else:
+        raise RuntimeError('Invalid value for "objective" parameter')
     # dump output payload, if debug
     if debug_enabled:
         log('output payload:')

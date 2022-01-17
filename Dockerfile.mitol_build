@@ -2,6 +2,6 @@ FROM mitodl/concourse-packer-resource
 ENV PYTHONUNBUFFERED=1
 CMD ["/bin/sh"]
 
-RUN apk add --no-cache --update build-base && \
+RUN apk add --no-cache --update build-base libffi-dev && \
     pip install --no-cache-dir ansible pyinfra && \
-    apk del build-base
+    apk del build-base libffi-dev
