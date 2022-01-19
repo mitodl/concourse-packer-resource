@@ -3,5 +3,5 @@ ENV PYTHONUNBUFFERED=1
 CMD ["/bin/sh"]
 
 RUN apk add --no-cache --update build-base libffi-dev && \
-    pip install --no-cache-dir ansible pyinfra && \
+    pip install --no-cache-dir ansible pyinfra pydantic httpx && \
     apk del build-base libffi-dev
