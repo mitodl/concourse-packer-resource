@@ -32,10 +32,11 @@ def _get_working_dir_file_path(
 
 
 # =============================================================================
-# _read_payload
+# _read_params
 # =============================================================================
-def _read_payload(stream=sys.stdin) -> Any:
-    return json.load(stream)
+def _read_params(stream=sys.stdin) -> dict:
+    inputs: dict = json.load(stream)
+    return inputs["params"]
 
 
 # =============================================================================
@@ -107,20 +108,20 @@ def do_packer(action: str) -> None:
     if action != 'out':
         raise ValueError(action + ' is not one of allowed check, in, or out.')
     # read the concourse input payload
-    input_payload = _read_payload()
+    params: dict = _read_params()
     # get packer objective from payload
-    objective: str = input_payload['params'].get('objective', 'validate')
+    objective: str = params.get('objective', 'validate')
     # get force setting from payload
-    force_enabled: bool = input_payload['params'].get('force', False)
+    force_enabled: bool = params.get('force', False)
     # get debug setting from payload
-    debug_enabled: bool = input_payload['params'].get('debug', False)
+    debug_enabled: bool = params.get('debug', False)
     # get the template file path from the payload
-    template_file_path: str = input_payload['params']['template']
+    template_file_path: str = params['template']
     # get the working dir path from the input
     working_dir_path = _get_working_dir_path()
     # set env vars, if provided
-    if 'env_vars' in input_payload['params']:
-        os.environ.update(input_payload['params']['env_vars'])
+    if 'env_vars' in params:
+        os.environ.update(params['env_vars'])
     # instantiate the var file paths and vars lists
     var_file_paths: Optional[List[str]] = None
     vars: Optional[Dict] = None
@@ -128,24 +129,24 @@ def do_packer(action: str) -> None:
     only: Optional[List[str]] = None
     excepts: Optional[List[str]] = None
     # add var file paths, if provided
-    if 'var_files' in input_payload['params']:
-        var_file_paths = input_payload['params']['var_files']
+    if 'var_files' in params:
+        var_file_paths = params['var_files']
     # add vars, if provided
-    if 'vars' in input_payload['params']:
-        vars = input_payload['params']['vars']
+    if 'vars' in params:
+        vars = params['vars']
     # add vars from files, if provided
-    if 'vars_from_files' in input_payload['params']:
-        vars_from_files = input_payload['params']['vars_from_files']
+    if 'vars_from_files' in params:
+        vars_from_files = params['vars_from_files']
     # set env vars from files, if provided
-    if 'env_vars_from_files' in input_payload['params']:
+    if 'env_vars_from_files' in params:
         _process_env_var_files(
-            input_payload['params']['env_vars_from_files'],
+            params['env_vars_from_files'],
             working_dir_path)
     # set only or except, if either provided
-    if 'only' in input_payload['params']:
-        only = input_payload['params']['only']
-    elif 'excepts' in input_payload['params']:
-        excepts = input_payload['params']['excepts']
+    if 'only' in params:
+        only = params['only']
+    elif 'excepts' in params:
+        excepts = params['excepts']
     # dump details, if debug enabled
     if debug_enabled:
         log('var_file_paths:')
