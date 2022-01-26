@@ -99,14 +99,12 @@ def _create_concourse_out_payload_from_packer_build_manifest(
 # public lifecycle functions
 #
 # =============================================================================
-def do_packer(action: str) -> None:
-    # short circuit return on 'check' or 'in'
-    if action in ['check', 'in']:
-        # not implemented
-        _write_payload({"version": {'id': '0'}})
-        return
-    if action != 'out':
-        raise ValueError(action + ' is not one of allowed check, in, or out.')
+def check_or_in_cmd() -> None:
+    # not implemented
+    _write_payload({"version": {'id': '0'}})
+
+
+def out_cmd() -> None:
     # read the concourse input payload
     params: dict = _read_params()
     # get packer objective from payload
@@ -118,7 +116,7 @@ def do_packer(action: str) -> None:
     # get the template file path from the payload
     template_file_path: str = params['template']
     # get the working dir path from the input
-    working_dir_path = _get_working_dir_path()
+    working_dir_path: str = _get_working_dir_path()
     # set env vars, if provided
     if 'env_vars' in params:
         os.environ.update(params['env_vars'])

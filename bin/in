@@ -14,7 +14,7 @@ import lib.concourse
 # do_in
 # =============================================================================
 def do_in() -> None:
-    lib.concourse.do_packer(action='in')
+    lib.concourse.check_or_in_cmd()
 
 
 # =============================================================================
