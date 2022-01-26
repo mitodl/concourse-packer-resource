@@ -9,15 +9,6 @@ from lib.log import log, log_pretty
 
 # =============================================================================
 #
-# constants
-#
-# =============================================================================
-
-PACKER_BIN_FILE_PATH = 'packer'
-
-
-# =============================================================================
-#
 # private utility functions
 #
 # =============================================================================
@@ -73,8 +64,7 @@ def _format_packer_machine_readable_output_line(
     data = data.replace('%!(PACKER_COMMA)', ',')
     if subtype:
         return f"{timestamp} | {target} | {type} | {subtype:8} | {data}"
-    else:
-        return f"{timestamp} | {target} | {type} | {data}"
+    return f"{timestamp} | {target} | {type} | {data}"
 
 
 # =============================================================================
@@ -117,12 +107,10 @@ def _parse_packer_parsed_output_for_build_manifest(
             del parsed_item['target']
             targets[target_name].append(parsed_item)
     # iterate on targets
-    for target in targets.keys():
-        # log('target:')
-        # log_pretty(target)
+    for target_key, target_value in targets.items():
         # split into artifacts
         target_artifacts = {}
-        for target_item in targets[target]:
+        for target_item in target_value:
             if target_item['type'] == 'artifact':
                 # first index of data will be the artifact number
                 artifact_number = target_item['data'][0]
@@ -142,7 +130,7 @@ def _parse_packer_parsed_output_for_build_manifest(
                 # assign the artifact key and value
                 target_artifacts[artifact_number][artifact_key] = \
                     artifact_value
-        manifest['artifacts'][target] = target_artifacts
+        manifest['artifacts'][target_key] = target_artifacts
     return manifest
 
 
@@ -155,10 +143,10 @@ def _parse_packer_parsed_output_for_build_manifest(
 # =============================================================================
 # _packer
 # =============================================================================
-def _packer(*args: str, input=None, working_dir=None) -> List[dict]:
+def _packer(*args: str, working_dir=None) -> List[dict]:
     # runs packer bin with forced machine readable output
     process_args = [
-        PACKER_BIN_FILE_PATH,
+        'packer',
         '-machine-readable',
         *args
     ]
@@ -170,7 +158,7 @@ def _packer(*args: str, input=None, working_dir=None) -> List[dict]:
             stderr=subprocess.STDOUT,  # redirect stderr to stdout
             bufsize=1,
             universal_newlines=True,
-            stdin=input,
+            stdin=None,
             cwd=working_dir) as pipe:
         for line in pipe.stdout:
             if 'fmt' in args:
@@ -186,7 +174,7 @@ def _packer(*args: str, input=None, working_dir=None) -> List[dict]:
     if pipe.returncode != 0:
         # args are masked to prevent credentials leaking
         raise subprocess.CalledProcessError(
-            pipe.returncode, [PACKER_BIN_FILE_PATH])
+            pipe.returncode, ['packer'])
     return parsed_lines
 
 
