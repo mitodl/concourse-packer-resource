@@ -8,6 +8,7 @@ ARG PACKER_VERSION=1.7.8
 RUN apk add --no-cache --update curl openssh && \
     curl "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip" -o packer.zip && \
     unzip packer.zip -d /bin/ && \
+    rm -f packer.zip && \
     apk del curl
 
 # copy scripts

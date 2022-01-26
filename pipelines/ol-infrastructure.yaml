@@ -81,18 +81,24 @@ jobs:
         objective: build
         vars:
           app_name: concourse
+        env_vars:
+          AWS_REGION: us-east-1
     - put: packer-build
       params:
         template: packer_templates/src/bilder/images/.
         objective: build
         vars:
           app_name: consul
+        env_vars:
+          AWS_REGION: us-east-1
         only:
         - amazon-ebs.third-party
     - put: packer-build
       params:
         template: packer_templates/src/bilder/images/edxapp/.
         objective: build
+        env_vars:
+          AWS_REGION: us-east-1
     - put: packer-build
       params:
         template: packer_templates/src/bilder/images/.
@@ -101,3 +107,5 @@ jobs:
           app_name: vault
         only:
         - amazon-ebs.third-party
+        env_vars:
+          AWS_REGION: us-east-1
