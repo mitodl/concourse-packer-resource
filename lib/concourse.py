@@ -159,7 +159,7 @@ def out_cmd() -> None:
         template_file_path)
     # initialize output payload (these values also used for validation)
     output_payload = {
-        'version': None,
+        'version': '',
         'metadata': []
     }
     # execute desired packer objective
