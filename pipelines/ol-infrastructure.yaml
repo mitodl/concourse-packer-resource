@@ -83,6 +83,7 @@ jobs:
           app_name: concourse
         env_vars:
           AWS_REGION: us-east-1
+          PYTHONPATH: "${PYTHONPATH}:packer_templates/src"
     - put: packer-build
       params:
         template: packer_templates/src/bilder/images/.
@@ -91,6 +92,7 @@ jobs:
           app_name: consul
         env_vars:
           AWS_REGION: us-east-1
+          PYTHONPATH: "${PYTHONPATH}:packer_templates/src"
         only:
         - amazon-ebs.third-party
     - put: packer-build
@@ -99,6 +101,7 @@ jobs:
         objective: build
         env_vars:
           AWS_REGION: us-east-1
+          PYTHONPATH: "${PYTHONPATH}:packer_templates/src"
     - put: packer-build
       params:
         template: packer_templates/src/bilder/images/.
@@ -109,3 +112,4 @@ jobs:
         - amazon-ebs.third-party
         env_vars:
           AWS_REGION: us-east-1
+          PYTHONPATH: "${PYTHONPATH}:packer_templates/src"
