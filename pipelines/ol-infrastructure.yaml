@@ -46,6 +46,14 @@ jobs:
         objective: validate
         vars:
           app_name: concourse
+          node_type: web
+    - put: packer-validate
+      params:
+        template: packer_templates/src/bilder/images/.
+        objective: validate
+        vars:
+          app_name: concourse
+          node_type: worker
     - put: packer-validate
       params:
         template: packer_templates/src/bilder/images/.
@@ -81,6 +89,17 @@ jobs:
         objective: build
         vars:
           app_name: concourse
+          node_type: web
+        env_vars:
+          AWS_REGION: us-east-1
+          PYTHONPATH: "${PYTHONPATH}:packer_templates/src"
+    - put: packer-build
+      params:
+        template: packer_templates/src/bilder/images/.
+        objective: build
+        vars:
+          app_name: concourse
+          node_type: worker
         env_vars:
           AWS_REGION: us-east-1
           PYTHONPATH: "${PYTHONPATH}:packer_templates/src"
