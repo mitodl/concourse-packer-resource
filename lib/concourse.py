@@ -101,7 +101,7 @@ def _create_concourse_out_payload_from_packer_build_manifest(
 # =============================================================================
 def check_or_in_cmd() -> None:
     # not implemented
-    _write_payload({"version": {'id': '0'}})
+    _write_payload({'version': {'id': '0'}})
 
 
 def out_cmd() -> None:
@@ -159,7 +159,7 @@ def out_cmd() -> None:
         template_file_path)
     # initialize output payload (these values also used for validation)
     output_payload = {
-        'version': '',
+        'version': {'id': '0'},
         'metadata': []
     }
     # execute desired packer objective
