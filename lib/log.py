@@ -1,8 +1,7 @@
 # stdlib
 import sys
-from typing import Any
 from pprint import PrettyPrinter
-
+from typing import Any
 
 # =============================================================================
 #
@@ -13,8 +12,10 @@ from pprint import PrettyPrinter
 # =============================================================================
 # log
 # =============================================================================
-def log(value: Any, **kwargs) -> None:
-    print(value, file=sys.stderr, **kwargs)
+
+
+def log(message: str, **kwargs) -> None:
+    print(message, file=sys.stderr, **kwargs)
 
 
 # =============================================================================
@@ -23,19 +24,19 @@ def log(value: Any, **kwargs) -> None:
 #       can-i-make-pprint-in-python3-not-split-strings-like-in-python2
 # =============================================================================
 class NoStringWrappingPrettyPrinter(PrettyPrinter):
-    def __init_(self, *args, **kwargs) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(self, *args, **kwargs)
 
-    def _format(self, object, *args) -> None:
-        if isinstance(object, str):
+    def _format(self, message, *args) -> None:
+        if isinstance(message, str):
             width = self._width
             self._width = sys.maxsize
             try:
-                super()._format(object, *args)
+                super()._format(message, *args)
             finally:
                 self._width = width
         else:
-            super()._format(object, *args)
+            super()._format(message, *args)
 
 
 # =============================================================================
