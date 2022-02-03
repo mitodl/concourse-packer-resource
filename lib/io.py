@@ -14,7 +14,7 @@ def read_value_from_file(file_path: str, working_dir=None) -> str:
     with open(file_path) as value_file:
         file_value = value_file.read()
     # trim any trailing newline
-    file_value = file_value.rstrip('\n')
+    file_value = file_value.rstrip("\n")
     # change back to original working dir
     if os.getcwd() != original_working_dir:
         os.chdir(original_working_dir)
