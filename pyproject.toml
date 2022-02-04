@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "concourse-packer-resource"
+version = "0.1.0"
+description = "A resource for orchestrating Packer builds in Concourse pipelines"
+authors = ["MIT Open Learning <odl-devops@mit.edu>"]
+license = "BSD-3-Clause"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+black = "^22.1.0"
+wemake-python-styleguide = "^0.16.0"
+pre-commit = "^2.17.0"
+mypy = "^0.931"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
