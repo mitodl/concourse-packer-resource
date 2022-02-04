@@ -79,7 +79,7 @@ def _create_concourse_out_payload_from_packer_build_manifest(
             if (not out_payload["version"]) and (artifact_index == "0"):
                 out_payload["version"] = {"id": artifact["id"]}
             # add artifact details as metadata
-            out_payload.get["metadata"].extend(
+            out_payload["metadata"].extend(
                 _create_concourse_metadata_from_build_manifest_artifact(
                     artifact_name, artifact_index, artifact
                 )
