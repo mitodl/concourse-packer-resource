@@ -41,6 +41,7 @@ def _read_params(stream=sys.stdin) -> dict:
 # _write_payload
 # =============================================================================
 def _write_payload(payload: Any, stream=sys.stdout) -> None:
+    log_pretty("Checking Payload Output")
     json.dump(payload, stream)
 
 
