@@ -92,9 +92,17 @@ def _create_concourse_out_payload_from_packer_build_manifest(
 # public lifecycle functions
 #
 # =============================================================================
-def check_or_in_cmd() -> None:
+def do_check_cmd() -> None:
     # not implemented
-    _write_payload({"version": {"id": "0"}})
+    _write_payload([{'id': '0'}])
+
+def do_in_cmd() -> None:
+    # not implemented
+    _write_payload({
+        "version": {
+            'id': '0'
+        }
+    })
 
 
 def out_cmd() -> None:
