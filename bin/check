@@ -15,7 +15,7 @@ from lib import concourse
 
 
 def do_check() -> None:
-    concourse.check_or_in_cmd()
+    concourse.do_check_cmd()
 
 
 # =============================================================================

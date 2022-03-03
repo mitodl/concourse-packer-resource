@@ -25,7 +25,7 @@ def log(message: str, **kwargs) -> None:
 # =============================================================================
 class NoStringWrappingPrettyPrinter(PrettyPrinter):
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _format(self, message, *args) -> None:
         if isinstance(message, str):
@@ -43,4 +43,5 @@ class NoStringWrappingPrettyPrinter(PrettyPrinter):
 # log_pretty
 # =============================================================================
 def log_pretty(value: Any) -> None:
-    NoStringWrappingPrettyPrinter(stream=sys.stderr).pprint(value)
+    pp = NoStringWrappingPrettyPrinter(stream=sys.stderr)
+    pp.pprint(value)
