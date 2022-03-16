@@ -1,6 +1,8 @@
+FROM mitodl/ol-infrastructure as infra
+RUN find /home/app/.venv/ -type l -exec unlink {} \;
+
 FROM mitodl/concourse-packer-resource
 ENV PYTHONUNBUFFERED=1
 CMD ["/bin/sh"]
 
-RUN apk add --no-cache --update build-base libffi-dev && \
-    pip install --no-cache-dir pyinfra==1.4.4 ansible pydantic httpx
+COPY --from=infra /home/app/.venv/ /usr/local/
