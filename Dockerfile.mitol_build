@@ -1,8 +1,17 @@
 FROM mitodl/ol-infrastructure as infra
-RUN find /home/app/.venv/ -type l -exec unlink {} \;
 
-FROM mitodl/concourse-packer-resource
+FROM python:3.9-slim
 ENV PYTHONUNBUFFERED=1
-CMD ["/bin/sh"]
+ARG PACKER_VERSION=1.7.10
+WORKDIR /opt/resource
 
-COPY --from=infra /home/app/.venv/ /usr/local/
+RUN apt-get update -yqq && apt-get install -yqq curl openssh-client unzip && \
+    curl "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip" -o packer.zip && \
+    unzip packer.zip -d /bin/ && \
+    rm -f packer.zip
+COPY bin/* /opt/resource/
+COPY lib/* /opt/resource/lib/
+
+ENV PATH /bin:/usr/bin/:/usr/local/bin:/home/app/.local/bin:/home/app/workspace/.venv/bin/
+COPY --from=infra /home/app/workspace/.venv/ /home/app/workspace/.venv/
+CMD ["/bin/sh"]
