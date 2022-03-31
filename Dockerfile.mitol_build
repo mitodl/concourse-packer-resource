@@ -1,8 +1,8 @@
 FROM mitodl/ol-infrastructure as infra
 
-FROM python:3.10-slim
+FROM python:3.9-slim
 ENV PYTHONUNBUFFERED=1
-ARG PACKER_VERSION=1.7.10
+ARG PACKER_VERSION=1.8.0
 WORKDIR /opt/resource
 
 RUN apt-get update -yqq && apt-get install -yqq curl openssh-client unzip && \
@@ -13,5 +13,5 @@ COPY bin/* /opt/resource/
 COPY lib/* /opt/resource/lib/
 
 ENV PATH /bin:/usr/bin/:/usr/local/bin:/home/app/.local/bin:/home/app/workspace/.venv/bin/
-COPY --from=infra /home/app/workspace/.venv/ /home/app/workspace/.venv/
+COPY --from=infra /usr/local/ /usr/local/
 CMD ["/bin/sh"]
