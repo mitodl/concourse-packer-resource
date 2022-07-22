@@ -3,7 +3,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /opt/resource
 CMD ["/bin/sh"]
 
-ARG PACKER_VERSION=1.8.0
+ARG PACKER_VERSION=1.8.2
 
 RUN apk add --no-cache --update curl openssh && \
     curl "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip" -o packer.zip && \
