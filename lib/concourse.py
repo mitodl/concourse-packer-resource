@@ -94,15 +94,12 @@ def _create_concourse_out_payload_from_packer_build_manifest(
 # =============================================================================
 def do_check_cmd() -> None:
     # not implemented
-    _write_payload([{'id': '0'}])
+    _write_payload([{"id": "0"}])
+
 
 def do_in_cmd() -> None:
     # not implemented
-    _write_payload({
-        "version": {
-            'id': '0'
-        }
-    })
+    _write_payload({"version": {"id": "0"}})
 
 
 def out_cmd() -> None:
