@@ -2,7 +2,7 @@
 import json
 import os
 import sys
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 # local
 from lib import packer
@@ -15,6 +15,7 @@ from lib.log import log, log_pretty
 #
 # =============================================================================
 
+
 # =============================================================================
 # _get_working_dir_path
 # =============================================================================
@@ -26,7 +27,7 @@ def _get_working_dir_path() -> str:
 # _get_working_dir_file_path
 # =============================================================================
 def _get_working_dir_file_path(working_dir_path: str, file_name: str) -> str:
-    return os.path.join(working_dir_path, file_name)
+    return os.path.join(working_dir_path, file_name)  # noqa: PTH118
 
 
 # =============================================================================
@@ -57,7 +58,7 @@ def _process_env_var_files(env_var_files: dict, working_dir: str) -> None:
 # =============================================================================
 def _create_concourse_metadata_from_build_manifest_artifact(
     artifact_name: str, artifact_index: str, artifact: dict
-) -> List[dict]:
+) -> list[dict]:
     metadata = []
     for key, value in artifact.items():
         metadata.append(
@@ -102,7 +103,7 @@ def do_in_cmd() -> None:
     _write_payload({"version": {"id": "0"}})
 
 
-def out_cmd() -> None:
+def out_cmd() -> None:  # noqa: PLR0912
     # read the concourse input payload
     params: dict = _read_params()
     # get packer objective from payload
@@ -119,11 +120,11 @@ def out_cmd() -> None:
     if "env_vars" in params:
         os.environ.update(params["env_vars"])
     # instantiate the var file paths and vars lists
-    var_file_paths: Optional[List[str]] = None
-    variables: Optional[Dict] = None
-    vars_from_files: Optional[Dict] = None
-    only: Optional[List[str]] = None
-    excepts: Optional[List[str]] = None
+    var_file_paths: Optional[list[str]] = None
+    variables: Optional[dict] = None
+    vars_from_files: Optional[dict] = None
+    only: Optional[list[str]] = None
+    excepts: Optional[list[str]] = None
     # add var file paths, if provided
     if "var_files" in params:
         var_file_paths = params["var_files"]

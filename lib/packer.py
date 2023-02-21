@@ -1,16 +1,17 @@
 # stdlib
 import subprocess
-from typing import List
 
 # local
 from lib.io import read_value_from_file
 from lib.log import log, log_pretty
+from typing import Optional
 
 # =============================================================================
 #
 # private utility functions
 #
 # =============================================================================
+
 
 # =============================================================================
 # _parse_packer_machine_readable_output_line
@@ -34,9 +35,9 @@ def _parse_packer_machine_readable_output_line(output_line: str) -> dict:
                 message_item["timestamp"] = line_token
             elif i == 1:
                 message_item["target"] = line_token
-            elif i == 2:
+            elif i == 2:  # noqa: PLR2004
                 message_item["type"] = line_token
-            elif i > 2:
+            elif i > 2:  # noqa: PLR2004
                 # strip trailing newline from data
                 message_item["data"].append(line_token.rstrip("\n"))
         parsed_line = message_item
@@ -63,35 +64,34 @@ def _format_packer_machine_readable_output_line(
 
 
 # =============================================================================
-# _print_parsed_packer_machine_readable_output_line
+# _print_parsed_packer_machine_readable_output_line  # noqa: ERA001
 # =============================================================================
 def _print_parsed_packer_machine_readable_output_line(parsed_line: dict) -> None:
-    if parsed_line:
-        if len(parsed_line["data"]) > 0:
-            subtype = None
-            # check for subtype
-            if parsed_line["data"][0] in ["say", "error", "message"]:
-                # pop found subtype from the parsed line
-                subtype = parsed_line["data"].pop(0)
-            for item in parsed_line["data"]:
-                # split on \\n
-                item_lines = item.split("\\n")
-                for item_line in item_lines:
-                    log(
-                        _format_packer_machine_readable_output_line(
-                            parsed_line["timestamp"],
-                            parsed_line["target"],
-                            parsed_line["type"],
-                            item_line,
-                            subtype=subtype,
-                        )
+    if parsed_line and len(parsed_line["data"]) > 0:
+        subtype = None
+        # check for subtype
+        if parsed_line["data"][0] in ["say", "error", "message"]:
+            # pop found subtype from the parsed line
+            subtype = parsed_line["data"].pop(0)
+        for item in parsed_line["data"]:
+            # split on \\n
+            item_lines = item.split("\\n")
+            for item_line in item_lines:
+                log(
+                    _format_packer_machine_readable_output_line(
+                        parsed_line["timestamp"],
+                        parsed_line["target"],
+                        parsed_line["type"],
+                        item_line,
+                        subtype=subtype,
                     )
+                )
 
 
 # =============================================================================
 # _parse_packer_parsed_output_for_build_manifest
 # =============================================================================
-def _parse_packer_parsed_output_for_build_manifest(parsed_output: List[dict]) -> dict:
+def _parse_packer_parsed_output_for_build_manifest(parsed_output: list[dict]) -> dict:
     manifest = {"artifacts": {}}
     # create collection of targets
     targets = {}
@@ -116,7 +116,7 @@ def _parse_packer_parsed_output_for_build_manifest(parsed_output: List[dict]) ->
                 if artifact_key == "end":
                     continue
                 # third index of data will be the artifact value, if present
-                if len(target_item["data"]) > 2:
+                if len(target_item["data"]) > 2:  # noqa: PLR2004
                     artifact_value = target_item["data"][2]
                 else:
                     artifact_value = None
@@ -135,10 +135,11 @@ def _parse_packer_parsed_output_for_build_manifest(parsed_output: List[dict]) ->
 #
 # =============================================================================
 
+
 # =============================================================================
 # _packer
 # =============================================================================
-def _packer(*args: str, working_dir=None) -> List[dict]:
+def _packer(*args: str, working_dir=None) -> list[dict]:
     # runs packer bin with forced machine readable output
     process_args = ["packer", "-machine-readable", *args]
     parsed_lines = []
@@ -175,6 +176,7 @@ def _packer(*args: str, working_dir=None) -> List[dict]:
 #
 # =============================================================================
 
+
 # =============================================================================
 # version
 # =============================================================================
@@ -202,14 +204,14 @@ def format_packer_cmd(working_dir_path: str, template_file_path: str) -> None:
 # =============================================================================
 # validate
 # =============================================================================
-def validate(
+def validate(  # noqa: PLR0913
     working_dir_path: str,
     template_file_path: str,
-    var_file_paths: List[str] = None,
-    template_vars: dict = None,
-    vars_from_files: dict = None,
-    only: List[str] = None,
-    excepts: List[str] = None,
+    var_file_paths: Optional[list[str]] = None,
+    template_vars: Optional[dict] = None,
+    vars_from_files: Optional[dict] = None,
+    only: Optional[list[str]] = None,
+    excepts: Optional[list[str]] = None,
     syntax_only: bool = False,
     debug: bool = False,
 ) -> None:
@@ -252,14 +254,14 @@ def validate(
 # =============================================================================
 # build
 # =============================================================================
-def build(
+def build(  # noqa: PLR0913
     working_dir_path: str,
     template_file_path: str,
-    var_file_paths: List[str] = None,
-    template_vars: dict = None,
-    vars_from_files: dict = None,
-    only: List[str] = None,
-    excepts: List[str] = None,
+    var_file_paths: Optional[list[str]] = None,
+    template_vars: Optional[dict] = None,
+    vars_from_files: Optional[dict] = None,
+    only: Optional[list[str]] = None,
+    excepts: Optional[list[str]] = None,
     debug: bool = False,
     force: bool = False,
 ) -> dict:

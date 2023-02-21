@@ -15,7 +15,7 @@ from typing import Any
 
 
 def log(message: str, **kwargs) -> None:
-    print(message, file=sys.stderr, **kwargs)
+    print(message, file=sys.stderr, **kwargs)  # noqa: T201
 
 
 # =============================================================================
