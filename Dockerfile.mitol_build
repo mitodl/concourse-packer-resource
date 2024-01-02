@@ -9,6 +9,7 @@ RUN apt-get update -yqq && apt-get install -yqq curl openssh-client unzip && \
     curl "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip" -o packer.zip && \
     unzip packer.zip -d /bin/ && \
     rm -f packer.zip &&\
+    pip install awscli &&\
     packer plugins install github.com/hashicorp/amazon
 COPY bin/* /opt/resource/
 COPY lib/* /opt/resource/lib/
