@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED=1
 ARG PACKER_VERSION=1.9.1
 WORKDIR /opt/resource
 
-RUN apt-get update -yqq && apt-get install -yqq curl openssh-client unzip && \
+RUN apt-get update -yqq && apt-get install -yqq curl jq openssh-client unzip && \
     curl "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip" -o packer.zip && \
     unzip packer.zip -d /bin/ && \
     rm -f packer.zip &&\
