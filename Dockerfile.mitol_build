@@ -12,7 +12,8 @@ RUN apt-get update -yqq && apt-get install -yqq curl jq openssh-client unzip && 
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
     ./aws/install && \
-    packer plugins install github.com/hashicorp/amazon
+    packer plugins install github.com/hashicorp/amazon && \
+    packer plugins install github.com/hashicorp/docker
 COPY bin/* /opt/resource/
 COPY lib/* /opt/resource/lib/
 
