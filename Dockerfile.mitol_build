@@ -1,4 +1,4 @@
-FROM mitodl/ol-infrastructure@sha256:ebf669314a48c1af177b32420e77cd440c9919d7d80a491d326a42d0838ecca6 as infra
+FROM mitodl/ol-infrastructure@sha256:fc70b93c94d8024e7f863bd51d9d23276b8323056fc20a821ed827db3fd192ad as infra
 
 FROM python:3.12-slim@sha256:2fba8e70a87bcc9f6edd20dda0a1d4adb32046d2acbca7361bc61da5a106a914
 ENV PYTHONUNBUFFERED=1
