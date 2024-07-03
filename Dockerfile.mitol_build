@@ -1,4 +1,4 @@
-FROM mitodl/ol-infrastructure
+FROM mitodl/ol-infrastructure as infra
 
 FROM python:3.11-slim
 ENV PYTHONUNBUFFERED=1
