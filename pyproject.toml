@@ -10,7 +10,7 @@ python = "^3.12"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.0.0"
-pre-commit = "^3.0.0"
+pre-commit = "^4.0.0"
 mypy = "^1.0"
 ruff = "^0.5.0"
 
