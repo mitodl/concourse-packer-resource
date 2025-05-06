@@ -24,6 +24,8 @@ def log(message: str, **kwargs) -> None:
 #       can-i-make-pprint-in-python3-not-split-strings-like-in-python2
 # =============================================================================
 class NoStringWrappingPrettyPrinter(PrettyPrinter):
+    _width: int
+
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
@@ -32,11 +34,11 @@ class NoStringWrappingPrettyPrinter(PrettyPrinter):
             width = self._width
             self._width = sys.maxsize
             try:
-                super()._format(message, *args)
+                super()._format(message, *args)  # type: ignore
             finally:
                 self._width = width
         else:
-            super()._format(message, *args)
+            super()._format(message, *args)  # type: ignore
 
 
 # =============================================================================

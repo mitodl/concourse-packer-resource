@@ -71,9 +71,9 @@ def _create_concourse_metadata_from_build_manifest_artifact(
 # _create_concourse_out_payload_from_packer_build_manifest
 # =============================================================================
 def _create_concourse_out_payload_from_packer_build_manifest(
-    build_manifest: dict,
-) -> dict:
-    out_payload = {"version": None, "metadata": []}
+    build_manifest: dict[str, Any],
+) -> dict[str, Any]:
+    out_payload: dict[str, Any] = {"version": None, "metadata": []}
     for artifact_name, artifacts in build_manifest["artifacts"].items():
         for artifact_index, artifact in artifacts.items():
             # use first artifact as version
