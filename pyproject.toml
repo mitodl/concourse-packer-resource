@@ -21,6 +21,34 @@ build-backend = "poetry.core.masonry.api"
 [tool.ruff]
 target-version = "py312"
 line-length = 88
+
+[tool.ruff.lint]
+fixable = ["I", "D", "B", "E", "F", "UP", "C4", "Q", "RET", "PIE", "SIM","UP", "W", "RUF"]
+ignore = [
+    "B008",
+    "B905",
+    "D104",
+    "D200",
+    "D202",
+    "D205",
+    "D301",
+    "D400",
+    "N801",
+    "N802",
+    "N803",
+    "N806",
+    "N813",
+    "N815",
+    "N816",
+    "PIE804",
+    "RET504",
+    "RET505",
+    "RET506",
+    "RET507",
+    "RET508",
+    "UP007"
+
+]
 select = [
     "A",      # flake8-builtins
     # "ARG",  # flake8-unused-arguments
@@ -60,36 +88,10 @@ select = [
     "YTT",     # flake8-2020
     "RUF"
 ]
-ignore = [
-    "B008",
-    "B905",
-    "D104",
-    "D200",
-    "D202",
-    "D205",
-    "D301",
-    "D400",
-    "N801",
-    "N802",
-    "N803",
-    "N806",
-    "N813",
-    "N815",
-    "N816",
-    "PIE804",
-    "RET504",
-    "RET505",
-    "RET506",
-    "RET507",
-    "RET508",
-    "UP007"
-
-]
 typing-modules = ["colour.hints"]
-fixable = ["I", "D", "B", "E", "F", "UP", "C4", "Q", "RET", "PIE", "SIM","UP", "W", "RUF"]
 
-[tool.ruff.pydocstyle]
-convention = "pep257"
-
-[tool.ruff.flake8-quotes]
+[tool.ruff.lint.flake8-quotes]
 inline-quotes = "double"
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"

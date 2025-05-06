@@ -4,7 +4,7 @@ import subprocess
 # local
 from lib.io import read_value_from_file
 from lib.log import log, log_pretty
-from typing import Optional
+from typing import Any, Optional
 
 # =============================================================================
 #
@@ -16,7 +16,9 @@ from typing import Optional
 # =============================================================================
 # _parse_packer_machine_readable_output_line
 # =============================================================================
-def _parse_packer_machine_readable_output_line(output_line: str) -> dict:
+def _parse_packer_machine_readable_output_line(
+    output_line: str,
+) -> Optional[dict[str, Any]]:
     # machine readable format
     # from https://www.packer.io/docs/commands/index.html
     parsed_line = None
@@ -91,10 +93,12 @@ def _print_parsed_packer_machine_readable_output_line(parsed_line: dict) -> None
 # =============================================================================
 # _parse_packer_parsed_output_for_build_manifest
 # =============================================================================
-def _parse_packer_parsed_output_for_build_manifest(parsed_output: list[dict]) -> dict:
-    manifest = {"artifacts": {}}
+def _parse_packer_parsed_output_for_build_manifest(
+    parsed_output: list[dict],
+) -> dict[str, dict[str, dict[str, Any]]]:
+    manifest: dict[str, dict[str, dict[str, Any]]] = {"artifacts": {}}
     # create collection of targets
-    targets = {}
+    targets: dict[str, list[dict[str, Any]]] = {}
     for parsed_item in parsed_output:
         if parsed_item["target"]:
             target_name = parsed_item["target"]
@@ -105,7 +109,7 @@ def _parse_packer_parsed_output_for_build_manifest(parsed_output: list[dict]) ->
     # iterate on targets
     for target_key, target_value in targets.items():
         # split into artifacts
-        target_artifacts = {}
+        target_artifacts: dict[str, dict[str, Optional[str]]] = {}
         for target_item in target_value:
             if target_item["type"] == "artifact":
                 # first index of data will be the artifact number
@@ -144,7 +148,7 @@ def _packer(*args: str, working_dir=None) -> list[dict]:
     process_args = ["packer", "-machine-readable", *args]
     parsed_lines = []
     # use Popen so we can read lines as they come
-    with subprocess.Popen(
+    with subprocess.Popen(  # noqa
         process_args,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,  # redirect stderr to stdout
@@ -162,8 +166,9 @@ def _packer(*args: str, working_dir=None) -> list[dict]:
             else:
                 # parse the machine readable output as it arrives
                 parsed_line = _parse_packer_machine_readable_output_line(line)
-                parsed_lines.append(parsed_line)
-                _print_parsed_packer_machine_readable_output_line(parsed_line)
+                if parsed_line is not None:
+                    parsed_lines.append(parsed_line)
+                    _print_parsed_packer_machine_readable_output_line(parsed_line)
     if pipe.returncode != 0:
         # args are masked to prevent credentials leaking
         raise subprocess.CalledProcessError(pipe.returncode, ["packer"])
