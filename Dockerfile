@@ -2,7 +2,7 @@ FROM python:3.13-alpine
 ENV PYTHONUNBUFFERED=1
 WORKDIR /opt/resource
 CMD ["/bin/sh"]
-
+# renovate: datasource=github-releases depName=packer packageName=hashicorp/packer
 ARG PACKER_VERSION=1.11.1
 
 RUN apk add --no-cache --update curl openssh && \

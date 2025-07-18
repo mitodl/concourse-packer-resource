@@ -1,6 +1,18 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "local>mitodl/.github:renovate-config"
-  ]
+  $schema: ''https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'local>mitodl/.github:renovate-config'
+  ],
+  customManagers: [
+    {
+      customType: 'regex',
+      managerFilePatterns: [
+        '/^Dockerfile/',
+        '/^Dockerfile.mitol_build/',
+      ],
+      matchStrings: [
+        '# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: packageName=(?<packageName>.+?))?(?: registryUrl=(?<registryUrl>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\s*.+\\s*=\\s*"(?<currentValue>.+?)(-eksbuild.\\d+)?"',
+      ],
+    },
+  ],
 }
