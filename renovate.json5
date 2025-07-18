@@ -11,7 +11,7 @@
         '/^Dockerfile.mitol_build/',
       ],
       matchStrings: [
-        '# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: packageName=(?<packageName>.+?))?(?: registryUrl=(?<registryUrl>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\s*.+\\s*=\\s*"(?<currentValue>.+?)(-eksbuild.\\d+)?"',
+        '# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: packageName=(?<packageName>.+?))?(?: registryUrl=(?<registryUrl>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\n\\s*.+\\s*=\\s*(?<currentValue>.+$)?',
       ],
     },
   ],
