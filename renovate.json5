@@ -7,11 +7,10 @@
     {
       customType: 'regex',
       managerFilePatterns: [
-        '/^Dockerfile/',
-        '/^Dockerfile.mitol_build/',
+        '/^Dockerfile.*$/'
       ],
       matchStrings: [
-        '# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: packageName=(?<packageName>.+?))?(?: registryUrl=(?<registryUrl>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\n\\s*.+\\s*=\\s*(?<currentValue>.+$)?',
+        '# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: packageName=(?<packageName>.+?))?(?: registryUrl=(?<registryUrl>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\s*.+\\s*=\\s*(?<currentValue>.+$)?',
       ],
     },
   ],
