@@ -2,7 +2,7 @@ FROM mitodl/ol-infrastructure as infra
 
 FROM python:3.13-slim
 ENV PYTHONUNBUFFERED=1
-ARG PACKER_VERSION=1.13.1
+ARG PACKER_VERSION=1.14.2
 WORKDIR /opt/resource
 
 RUN apt-get update -yqq && apt-get install -yqq curl jq openssh-client unzip && \
