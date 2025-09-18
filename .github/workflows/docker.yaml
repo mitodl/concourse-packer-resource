@@ -18,7 +18,7 @@ jobs:
 
     - name: login to DockerHub
       # v3
-      uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
+      uses: docker/login-action@5b7b28b1cc417bbd34cd8c225a957c9ce9adf7f2
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
