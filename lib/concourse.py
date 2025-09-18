@@ -2,7 +2,7 @@
 import json
 import os
 import sys
-from typing import Any, Optional
+from typing import Any
 
 # local
 from lib import packer
@@ -120,11 +120,11 @@ def out_cmd() -> None:  # noqa: PLR0912
     if "env_vars" in params:
         os.environ.update(params["env_vars"])
     # instantiate the var file paths and vars lists
-    var_file_paths: Optional[list[str]] = None
-    variables: Optional[dict] = None
-    vars_from_files: Optional[dict] = None
-    only: Optional[list[str]] = None
-    excepts: Optional[list[str]] = None
+    var_file_paths: list[str] | None = None
+    variables: dict | None = None
+    vars_from_files: dict | None = None
+    only: list[str] | None = None
+    excepts: list[str] | None = None
     # add var file paths, if provided
     if "var_files" in params:
         var_file_paths = params["var_files"]

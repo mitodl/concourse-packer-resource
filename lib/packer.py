@@ -4,7 +4,7 @@ import subprocess
 # local
 from lib.io import read_value_from_file
 from lib.log import log, log_pretty
-from typing import Any, Optional
+from typing import Any
 
 # =============================================================================
 #
@@ -18,7 +18,7 @@ from typing import Any, Optional
 # =============================================================================
 def _parse_packer_machine_readable_output_line(
     output_line: str,
-) -> Optional[dict[str, Any]]:
+) -> dict[str, Any] | None:
     # machine readable format
     # from https://www.packer.io/docs/commands/index.html
     parsed_line = None
@@ -109,7 +109,7 @@ def _parse_packer_parsed_output_for_build_manifest(
     # iterate on targets
     for target_key, target_value in targets.items():
         # split into artifacts
-        target_artifacts: dict[str, dict[str, Optional[str]]] = {}
+        target_artifacts: dict[str, dict[str, str | None]] = {}
         for target_item in target_value:
             if target_item["type"] == "artifact":
                 # first index of data will be the artifact number
@@ -212,11 +212,11 @@ def format_packer_cmd(working_dir_path: str, template_file_path: str) -> None:
 def validate(  # noqa: PLR0913
     working_dir_path: str,
     template_file_path: str,
-    var_file_paths: Optional[list[str]] = None,
-    template_vars: Optional[dict] = None,
-    vars_from_files: Optional[dict] = None,
-    only: Optional[list[str]] = None,
-    excepts: Optional[list[str]] = None,
+    var_file_paths: list[str] | None = None,
+    template_vars: dict | None = None,
+    vars_from_files: dict | None = None,
+    only: list[str] | None = None,
+    excepts: list[str] | None = None,
     syntax_only: bool = False,
     debug: bool = False,
 ) -> None:
@@ -262,11 +262,11 @@ def validate(  # noqa: PLR0913
 def build(  # noqa: PLR0913
     working_dir_path: str,
     template_file_path: str,
-    var_file_paths: Optional[list[str]] = None,
-    template_vars: Optional[dict] = None,
-    vars_from_files: Optional[dict] = None,
-    only: Optional[list[str]] = None,
-    excepts: Optional[list[str]] = None,
+    var_file_paths: list[str] | None = None,
+    template_vars: dict | None = None,
+    vars_from_files: dict | None = None,
+    only: list[str] | None = None,
+    excepts: list[str] | None = None,
     debug: bool = False,
     force: bool = False,
 ) -> dict:
