@@ -1,6 +1,6 @@
 FROM mitodl/ol-infrastructure as infra
 
-FROM python:3.13-slim
+FROM python:3.13-slim@sha256:739e7213785e88c0f702dcdc12c0973afcbd606dbf021a589cab77d6b00b579d
 ENV PYTHONUNBUFFERED=1
 ARG PACKER_VERSION=1.14.2
 WORKDIR /opt/resource
