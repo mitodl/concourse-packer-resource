@@ -573,4 +573,4 @@ python-discovery = ">=1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "7d73b50a81cc9e45e237c7ec380005ab52b2d059342c7501c0f54cdfe8e1c02d"
+content-hash = "28f231d06efecec7788d93270d6e4aeb3c868ac02454a7a95690b0a6376fc626"
