@@ -1,4 +1,4 @@
-FROM python:3.13-alpine
+FROM python:3.13-alpine@sha256:f7a0d041be64b14d19c642fa6b8a9990d1af4921e6dd1dbe7821cbfab52dc0d1
 ENV PYTHONUNBUFFERED=1
 WORKDIR /opt/resource
 CMD ["/bin/sh"]
