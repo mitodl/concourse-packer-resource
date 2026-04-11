@@ -1,5 +1,9 @@
 # Concourse Packer Resource
 
+> [!WARNING]
+> **This repository is archived and no longer maintained.**
+> Please use the Packer resource in [mitodl/ol-concourse](https://github.com/mitodl/ol-concourse) instead.
+
 Based off the cycloidio/concourse-packer-resource fork of Snapkitchen/concourse-packer-resource.
 
 A [concourse-ci](https://concourse-ci.org) resource for building images via [Packer](https://www.packer.io).
