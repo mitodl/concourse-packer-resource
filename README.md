@@ -1,3 +1,6 @@
+> [!WARNING]
+> **This repository is archived.** Development has moved to [mitodl/ol-concourse](https://github.com/mitodl/ol-concourse/tree/main/resources/packer). Please use that repository instead.
+
 # Concourse Packer Resource
 
 Based off the cycloidio/concourse-packer-resource fork of Snapkitchen/concourse-packer-resource.
